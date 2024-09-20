@@ -16,4 +16,4 @@ data class TextGenshin(
     override val id: Long,
     @Column(name = "text")
     override var text: String
-): TextSimpleEntry
+) : TextSimpleEntry

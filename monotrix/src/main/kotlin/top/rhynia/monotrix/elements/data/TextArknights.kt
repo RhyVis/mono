@@ -10,10 +10,10 @@ import top.rhynia.monotrix.interfaces.data.TextSimpleEntry
 
 @Entity
 @Table(name = "arknights")
-data class TextArknights (
+data class TextArknights(
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     override val id: Long,
     @Column(name = "text")
     override var text: String
-): TextSimpleEntry
+) : TextSimpleEntry

@@ -1,12 +1,12 @@
 package top.rhynia.monotrix.components
 
 import com.github.houbb.opencc4j.util.ZhConverterUtil
-import top.rhynia.monotrix.util.DictAssembly.dictHanToEmoji
+import top.rhynia.monotrix.elements.web.result.PackedResult
 import top.rhynia.monotrix.util.DictAssembly.dictEmojiToHan
+import top.rhynia.monotrix.util.DictAssembly.dictHanToEmoji
 import top.rhynia.monotrix.util.DictAssembly.dictHanToSpark
 import top.rhynia.monotrix.util.DictAssembly.dictSparkToHan
 import top.rhynia.monotrix.util.DictAssembly.dictUnicodeDiff
-import top.rhynia.monotrix.elements.web.result.PackedResult
 import kotlin.random.Random
 
 object FuncDict {
@@ -23,7 +23,7 @@ object FuncDict {
             else -> text
         }
     }
-    
+
     private fun codeEmoji(text: String): String {
         return replaceRefDictArray(text, dictHanToEmoji)
     }
@@ -36,7 +36,7 @@ object FuncDict {
         return replaceRefDict(text, dictHanToSpark)
     }
 
-    private  fun decodeSpark(text: String): String {
+    private fun decodeSpark(text: String): String {
         return replaceRefDict(text, dictSparkToHan)
     }
 

@@ -62,7 +62,7 @@ const actSelect = async () => {
         <el-input :value="result.text" type="textarea" placeholder="远程内容" readonly />
       </el-form-item>
       <el-form-item label="备注内容">
-        <el-input :value="result.note" type="textarea" placeholder="远程备注" readonly />
+        <el-input :value="result.note" type="text" placeholder="远程备注" readonly />
       </el-form-item>
       <el-divider />
       <el-form-item label="ID">

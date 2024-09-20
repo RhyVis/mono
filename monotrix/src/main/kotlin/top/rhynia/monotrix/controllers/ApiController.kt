@@ -1,10 +1,5 @@
 package top.rhynia.monotrix.controllers
 
-import cn.hutool.core.io.FileUtil
-import kotlinx.serialization.json.Json
-import kotlinx.serialization.json.jsonObject
-import org.springframework.beans.factory.annotation.Value
-import org.springframework.core.io.Resource
 import org.springframework.web.bind.annotation.GetMapping
 import org.springframework.web.bind.annotation.PostMapping
 import org.springframework.web.bind.annotation.RequestBody
@@ -22,10 +17,7 @@ import top.rhynia.monotrix.elements.web.post.PostStr
 import top.rhynia.monotrix.elements.web.post.PostStrSave
 import top.rhynia.monotrix.elements.web.post.PostTarot
 import top.rhynia.monotrix.elements.web.result.PackedResult
-import top.rhynia.monotrix.interfaces.Log
-import top.rhynia.monotrix.interfaces.Log.Companion.log
 
-@Log
 @RestController
 @RequestMapping("/api")
 class ApiController(
@@ -34,8 +26,6 @@ class ApiController(
     private val funcAuth: FuncAuth,
     private val funcSave: FuncSave
 ) {
-    @Value("classpath:/static/version.json")
-    private lateinit var versionResource: Resource
 
     @RequestMapping("/")
     fun root(): String {

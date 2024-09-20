@@ -3,7 +3,7 @@ package top.rhynia.monotrix.elements.tarot
 import kotlinx.serialization.Serializable
 
 @Serializable
-data class TarotCard (
+data class TarotCard(
     val index: Int,
     val name: String,
     val loc: String,
