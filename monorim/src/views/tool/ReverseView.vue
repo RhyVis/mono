@@ -25,7 +25,7 @@ const action = async () => {
   if (query.text.length > 0) {
     const reversed = [...query.text].reverse().join("");
     switch (query.mode) {
-      case "rev":
+      case "reverse":
         result.value = reversed;
         break;
       case "fold-in":

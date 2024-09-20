@@ -37,10 +37,14 @@ const actStore = async () => {
 const actSelect = async () => {
   cpBtnReset();
   const r = (await axios.post("/api/save", query)).data.result;
-  result.text = r.text;
-  result.note = r.note;
-  query.text = r.text;
-  query.note = r.note;
+  const { id, text, note } = r;
+  if (id < 0) {
+    result.sign = "读取失败";
+  } else {
+    result.text = query.text = text;
+    result.note = query.note = note;
+    result.sign = "读取成功";
+  }
 };
 </script>
 

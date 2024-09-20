@@ -7,7 +7,7 @@ import top.rhynia.monotrix.interfaces.repository.TextLongStorageRepository
 @Service
 class FuncSave(private val repo: TextLongStorageRepository) {
     fun queryStr(id: Long): TextLongStorage {
-        return repo.findById(id).orElse(TextLongStorage(0, "", ""))
+        return repo.findById(id).orElse(TextLongStorage(-1, "", ""))
     }
 
     fun updateStr(id: Long, text: String, note: String = "") {

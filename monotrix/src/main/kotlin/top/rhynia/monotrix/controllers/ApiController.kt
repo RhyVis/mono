@@ -3,6 +3,8 @@ package top.rhynia.monotrix.controllers
 import cn.hutool.core.io.FileUtil
 import kotlinx.serialization.json.Json
 import kotlinx.serialization.json.jsonObject
+import org.springframework.beans.factory.annotation.Value
+import org.springframework.core.io.Resource
 import org.springframework.web.bind.annotation.GetMapping
 import org.springframework.web.bind.annotation.PostMapping
 import org.springframework.web.bind.annotation.RequestBody
@@ -17,7 +19,6 @@ import top.rhynia.monotrix.components.FuncTarot
 import top.rhynia.monotrix.elements.web.post.PostCodex
 import top.rhynia.monotrix.elements.web.post.PostSpam
 import top.rhynia.monotrix.elements.web.post.PostStr
-import top.rhynia.monotrix.elements.web.post.PostStrEntry
 import top.rhynia.monotrix.elements.web.post.PostStrSave
 import top.rhynia.monotrix.elements.web.post.PostTarot
 import top.rhynia.monotrix.elements.web.result.PackedResult
@@ -33,22 +34,12 @@ class ApiController(
     private val funcAuth: FuncAuth,
     private val funcSave: FuncSave
 ) {
+    @Value("classpath:/static/version.json")
+    private lateinit var versionResource: Resource
 
     @RequestMapping("/")
     fun root(): String {
         return "API Root"
-    }
-
-    @GetMapping("/version")
-    fun version(): Long {
-        try {
-            val v = Json.parseToJsonElement(FileUtil.readUtf8String("static/version.json"))
-                .jsonObject["compileTime"].toString()
-            return v.toLong()
-        } catch (e: Exception) {
-            log.error(e.message, e)
-            return 0
-        }
     }
 
     // region Auth
