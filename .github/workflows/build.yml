@@ -31,6 +31,7 @@ jobs:
       - name: Build Backend & Pack
         run: |
           cd monotrix
+          chmod +x ./gradlew
           ./gradlew publish
           mv build/libs/monotrix-[0-9].[0-9].[0-9].jar ../../../mono.jar
           cd ..
