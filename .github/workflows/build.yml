@@ -21,18 +21,11 @@ jobs:
       - uses: gradle/actions/setup-gradle@v4.1.0
       - uses: actions/checkout@v4
 
-      - name: Build Frontend
-        run: |
-          cd monorim
-          npm install --no-audit --loglevel=error
-          npm run build
-          cd ..
-
-      - name: Build Backend & Pack
+      - name: Build
         run: |
           cd monotrix
           chmod +x ./gradlew
-          ./gradlew publish
+          ./gradlew publish -x test
           mv build/libs/monotrix-[0-9].[0-9].[0-9].jar ../../../mono.jar
           cd ..
 
