@@ -64,12 +64,17 @@ tasks.register<Delete>("cleanVue") {
     delete("src/main/resources/static")
 }
 
-tasks.register<Copy>("copyVueBuild") {
+tasks.register<Copy>("copyVue") {
     dependsOn("buildVue", "cleanVue")
     from("../monorim/dist")
     into("src/main/resources/static")
 }
 
-tasks.register("buildStatic") {
-    dependsOn("copyVueBuild")
+tasks.named<ProcessResources>("processResources") {
+    dependsOn("copyVue")
+}
+
+tasks.register("publish") {
+    dependsOn("copyVue")
+    finalizedBy("build")
 }

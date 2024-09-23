@@ -1,0 +1,42 @@
+name: Build
+
+on:
+  push:
+    branches:
+      - main
+
+permissions: write-all
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 21
+
+      - uses: actions/checkout@v4
+
+      - name: Build Frontend
+        run: |
+          cd monorim
+          npm install --no-audit --loglevel=error
+          npm run build
+          cd ..
+
+      - name: Build Backend & Pack
+        run: |
+          cd monotrix
+          gradlew publish
+          mv build/libs/monotrix-[0-9].[0-9].[0-9].jar ../../../mono.jar
+          cd ..
+
+      - name: Release
+        uses: ncipollo/release-action@v1.14.0
+        with:
+          name: Test Build
+          artifacts: "mono.jar"
+          tag: "prebuild"
+          allowUpdates: true
+          prerelease: true
+          body: "Pre-release build for dev"
