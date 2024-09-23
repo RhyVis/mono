@@ -16,7 +16,7 @@ jobs:
           node-version: 21
       - uses: actions/setup-java@v4.3.0
         with:
-          distribution: 'graalvm'
+          distribution: 'zulu'
           java-version: 22
       - uses: gradle/actions/setup-gradle@v4.1.0
       - uses: actions/checkout@v4
@@ -31,7 +31,7 @@ jobs:
       - name: Build Backend & Pack
         run: |
           cd monotrix
-          gradle publish
+          gradlew publish
           mv build/libs/monotrix-[0-9].[0-9].[0-9].jar ../../../mono.jar
           cd ..
 
