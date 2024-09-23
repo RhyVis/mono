@@ -1,4 +1,3 @@
-import com.github.gradle.node.npm.task.NpmInstallTask
 import com.github.gradle.node.npm.task.NpmTask
 
 plugins {
@@ -59,12 +58,13 @@ tasks.withType<Test> {
     useJUnitPlatform()
 }
 
-tasks.named<NpmInstallTask>("npmInstall") {
+tasks.register<NpmTask>("installVue") {
     workingDir = file("../monorim")
+    args = listOf("install")
 }
 
 tasks.register<NpmTask>("buildVue") {
-    dependsOn("npmInstall")
+    dependsOn("installVue")
     workingDir = file("../monorim")
     args = listOf("run", "build")
 }
