@@ -1,11 +1,7 @@
 <script setup lang="ts">
 import { computed, ref } from "vue";
+import { CopyDocument } from "@element-plus/icons-vue";
 import useClipboard from "vue-clipboard3";
-
-interface State {
-  type: string;
-  value: string;
-}
 
 const props = defineProps({
   target: {
@@ -19,28 +15,16 @@ const props = defineProps({
 });
 
 const btnState = ref(0);
-const btnDisplay = computed<State>(() => {
+const btnDisplay = computed<String>(() => {
   switch (btnState.value) {
     case 0:
-      return {
-        type: "",
-        value: "复制",
-      };
+      return "";
     case 1:
-      return {
-        type: "success",
-        value: "成功",
-      };
+      return "success";
     case 2:
-      return {
-        type: "danger",
-        value: "失败",
-      };
+      return "danger";
     default:
-      return {
-        type: "warning",
-        value: "未知",
-      };
+      return "warning";
   }
 });
 
@@ -62,7 +46,8 @@ const action = async () => {
 </script>
 
 <template>
-  <el-button :type="btnDisplay.type" @click="action">
-    {{ btnDisplay.value }}
-  </el-button>
+  <el-tooltip content="复制输出内容" placement="top">
+    <el-button :type="btnDisplay" @click="action">
+      <el-icon><CopyDocument /></el-icon> </el-button
+  ></el-tooltip>
 </template>

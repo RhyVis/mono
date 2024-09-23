@@ -11,8 +11,7 @@ class FuncSave(private val repo: TextLongStorageRepository) {
     }
 
     fun updateStr(id: Long, text: String, note: String = "") {
-        val obj = repo.findById(id)
-        obj.ifPresentOrElse(
+        repo.findById(id).ifPresentOrElse(
             { it.text = text; it.note = note; repo.save(it) },
             { repo.save(TextLongStorage(id, text, note)) }
         )

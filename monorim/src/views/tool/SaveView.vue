@@ -61,7 +61,7 @@ const actSelect = async () => {
       <el-form-item label="读取内容">
         <el-input :value="result.text" type="textarea" placeholder="远程内容" readonly />
       </el-form-item>
-      <el-form-item label="备注内容">
+      <el-form-item label="读取备注">
         <el-input :value="result.note" type="text" placeholder="远程备注" readonly />
       </el-form-item>
       <el-divider />
@@ -72,10 +72,16 @@ const actSelect = async () => {
         {{ result.sign }}
       </el-form-item>
       <el-form-item label="操作数据">
-        <el-button type="primary" @click="actStore">存储</el-button>
-        <el-button type="primary" @click="actSelect">读取</el-button>
-        <CopyButton :target="result.text" :key="cpBtnKey" />
-        <ReadButton v-model:target="query.text" />
+        <el-button-group>
+          <el-button type="primary" @click="actStore">存储</el-button>
+          <el-button type="primary" @click="actSelect">读取</el-button>
+        </el-button-group>
+      </el-form-item>
+      <el-form-item label="工具">
+        <el-button-group>
+          <CopyButton :target="result.text" :key="cpBtnKey" />
+          <ReadButton v-model:target="query.text" />
+        </el-button-group>
       </el-form-item>
     </el-form>
   </CardFrame>

@@ -1,5 +1,6 @@
 <script setup lang="ts">
 import { computed, ref } from "vue";
+import { DocumentAdd } from "@element-plus/icons-vue";
 
 defineProps({
   target: {
@@ -12,20 +13,11 @@ const btnState = ref(0);
 const btnDisplay = computed(() => {
   switch (btnState.value) {
     case 0:
-      return {
-        type: "info",
-        value: "读取",
-      };
+      return "info";
     case 1:
-      return {
-        type: "danger",
-        value: "失败",
-      };
+      return "danger";
     default:
-      return {
-        type: "warning",
-        value: "未知",
-      };
+      return "warning";
   }
 });
 
@@ -43,7 +35,8 @@ const action = async () => {
 </script>
 
 <template>
-  <el-button :type="btnDisplay.type" @click="action">
-    {{ btnDisplay.value }}
-  </el-button>
+  <el-tooltip content="读取剪贴板内容" placement="top">
+    <el-button :type="btnDisplay" @click="action">
+      <el-icon><DocumentAdd /></el-icon> </el-button
+  ></el-tooltip>
 </template>

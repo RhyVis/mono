@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import axios from "axios";
-import { reactive, ref, computed } from "vue";
+import { reactive, ref, computed, onMounted } from "vue";
 import { useTarotStore } from "@/stores/tool/tarot.ts";
 import { Card, CardDisplay } from "@/lib/typeTarot.ts";
 import CardFrame from "@/components/frame/CardFrame.vue";
@@ -44,6 +44,10 @@ const drawDeck = async () => {
     };
   });
 };
+
+onMounted(() => {
+  query.deck = store.deck;
+});
 </script>
 
 <template>

@@ -1,5 +1,6 @@
 <script setup lang="ts">
 import { reactive, ref } from "vue";
+import { VideoPlay } from "@element-plus/icons-vue";
 import CardFrame from "@/components/frame/CardFrame.vue";
 import CopyButton from "@/components/util/CopyButton.vue";
 import ReadButton from "@/components/util/ReadButton.vue";
@@ -75,11 +76,17 @@ const action = async () => {
         <span>{{ result }}</span>
       </el-form-item>
     </el-form>
-    <el-form-item>
-      <el-button type="primary" @click="action">启动</el-button>
-      <CopyButton :target="result" :key="cpBtnKey" />
-      <ReadButton v-model:target="query.text" />
-      <ClearButton v-model:target="query.text" />
+    <el-form-item label="操作">
+      <el-button type="primary" @click="action">
+        <el-icon><VideoPlay /></el-icon>
+      </el-button>
+    </el-form-item>
+    <el-form-item label="工具">
+      <el-button-group>
+        <CopyButton :target="result" :key="cpBtnKey" />
+        <ReadButton v-model:target="query.text" />
+        <ClearButton v-model:target="query.text" />
+      </el-button-group>
     </el-form-item>
   </CardFrame>
 </template>
