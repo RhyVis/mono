@@ -1,3 +1,6 @@
+import com.github.gradle.node.npm.task.NpmInstallTask
+import com.github.gradle.node.npm.task.NpmTask
+
 plugins {
     kotlin("jvm") version "1.9.25"
     kotlin("plugin.spring") version "1.9.25"
@@ -5,6 +8,7 @@ plugins {
     id("io.spring.dependency-management") version "1.1.6"
     id("org.hibernate.orm") version "6.5.2.Final"
     id("org.graalvm.buildtools.native") version "0.10.2"
+    id ("com.github.node-gradle.node") version "7.0.2"
     kotlin("plugin.jpa") version "1.9.25"
     kotlin("plugin.serialization") version "1.9.25"
 }
@@ -55,9 +59,14 @@ tasks.withType<Test> {
     useJUnitPlatform()
 }
 
-tasks.register<Exec>("buildVue") {
+tasks.named<NpmInstallTask>("npmInstall") {
     workingDir = file("../monorim")
-    commandLine = listOf("cmd.exe", "/c", "npm", "run", "build")
+}
+
+tasks.register<NpmTask>("buildVue") {
+    dependsOn("npmInstall")
+    workingDir = file("../monorim")
+    args = listOf("run", "build")
 }
 
 tasks.register<Delete>("cleanVue") {
