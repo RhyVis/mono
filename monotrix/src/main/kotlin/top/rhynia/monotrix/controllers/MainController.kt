@@ -1,12 +1,12 @@
 package top.rhynia.monotrix.controllers
 
 import org.springframework.stereotype.Controller
-import org.springframework.web.bind.annotation.GetMapping
+import org.springframework.web.bind.annotation.RequestMapping
 
 @Controller
 class MainController {
-    @GetMapping("/")
+    @RequestMapping("/")
     fun main(): String {
-        return "/index.html"
+        return "index"
     }
 }
