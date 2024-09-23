@@ -58,6 +58,18 @@ tasks.withType<Test> {
     useJUnitPlatform()
 }
 
+tasks.processResources {
+    dependsOn("copyVue")
+}
+
+tasks.jar {
+    archiveFileName.set("mono-plain.jar")
+}
+
+tasks.bootJar {
+    archiveFileName.set("mono.jar")
+}
+
 tasks.register<NpmTask>("installVue") {
     workingDir = file("../monorim")
     args = listOf("install")
@@ -77,10 +89,6 @@ tasks.register<Copy>("copyVue") {
     dependsOn("buildVue", "cleanVue")
     from("../monorim/dist")
     into("src/main/resources/static")
-}
-
-tasks.named<ProcessResources>("processResources") {
-    dependsOn("copyVue")
 }
 
 tasks.register("publish") {
