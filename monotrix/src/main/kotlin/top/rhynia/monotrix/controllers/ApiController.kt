@@ -8,6 +8,7 @@ import org.springframework.web.bind.annotation.RequestMethod
 import org.springframework.web.bind.annotation.RestController
 import top.rhynia.monotrix.components.FuncAuth
 import top.rhynia.monotrix.components.FuncDict
+import top.rhynia.monotrix.components.FuncNav
 import top.rhynia.monotrix.components.FuncSave
 import top.rhynia.monotrix.components.FuncSpam
 import top.rhynia.monotrix.components.FuncTarot
@@ -24,7 +25,8 @@ class ApiController(
     private val funcSpam: FuncSpam,
     private val funcTarot: FuncTarot,
     private val funcAuth: FuncAuth,
-    private val funcSave: FuncSave
+    private val funcSave: FuncSave,
+    private val funcNav: FuncNav
 ) {
 
     @RequestMapping("/")
@@ -109,6 +111,13 @@ class ApiController(
         } catch (e: Exception) {
             return PackedResult(-1, e)
         }
+    }
+    // endregion
+
+    // region Nav
+    @GetMapping("/nav")
+    fun navIndexList(): PackedResult {
+        return funcNav.getIndexList()
     }
     // endregion
 }

@@ -23,6 +23,12 @@ const routerTool: RouteRecordRaw[] = [
   },
   // Auth required
   {
+    path: "/nav",
+    name: "Nav",
+    meta: { requireToken: true },
+    component: () => import("@/views/tool/NavView.vue"),
+  },
+  {
     path: "/save",
     name: "Save",
     meta: { requireToken: true },

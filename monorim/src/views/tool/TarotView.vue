@@ -1,8 +1,8 @@
 <script setup lang="ts">
 import axios from "axios";
-import { reactive, ref, computed, onMounted } from "vue";
+import { reactive, ref, computed, onMounted, Ref } from "vue";
 import { useTarotStore } from "@/stores/tool/tarot.ts";
-import { Card, CardDisplay } from "@/lib/typeTarot.ts";
+import { Card, CardDisplay, DeckInfo } from "@/lib/typeTarot.ts";
 import CardFrame from "@/components/frame/CardFrame.vue";
 import TarotMain from "@/components/disp/tarot/TarotMain.vue";
 import TarotDesc from "@/components/disp/tarot/TarotDesc.vue";
@@ -18,18 +18,30 @@ const query = reactive({
 
 const activeTab = ref("simple");
 
-const deckTypes = [
-  { value: "waite", label: "韦特" },
-  { value: "shadowscapes", label: "花影" },
-  { value: "bilibili", label: "幻星集" },
-  { value: "bluearchive", label: "碧蓝档案" },
-  { value: "arknights", label: "明日方舟" },
-];
+interface DeckInfoInterface {
+  [name: string]: DeckInfo;
+}
+
+let deckInfoMap: Ref<DeckInfoInterface> = ref({});
+let deckInfoList: Ref<DeckInfo[]> = ref([]);
+let deckInfoSelect: Ref<any[]> = ref([]);
+
+axios.get("api/tarot/info").then((res) => {
+  deckInfoMap.value = res.data.result;
+  const list = Object.values(res.data.result) as DeckInfo[];
+  deckInfoList.value = list;
+  deckInfoSelect.value = list.map((item) => {
+    return {
+      value: item.name,
+      label: item.loc,
+    };
+  });
+});
 
 const deckResult = ref([] as CardDisplay[]);
 
 const deckShowDesc = ref(true);
-const deckFull = computed(() => query.deck === "waite" || query.deck === "bilibili" || query.deck === "shadowscapes");
+const deckFull = computed(() => deckInfoMap.value[query.deck]?.full ?? false);
 const deckMax = computed(() => (deckFull.value && query.full ? 78 : 22));
 const deckFullTooltip = computed(() => (deckFull.value ? "完整卡组包括小阿尔卡那" : "该卡组只包括大阿尔卡那"));
 
@@ -58,7 +70,7 @@ onMounted(() => {
         <!-- 简单类型抽牌 -->
         <el-tab-pane label="简单模式" name="simple">
           <el-form-item label="卡面类型">
-            <SelectSimple :options="deckTypes" v-model:select="query.deck" />
+            <SelectSimple :options="deckInfoSelect" v-model:select="query.deck" />
           </el-form-item>
           <el-form-item label="完整卡组">
             <el-tooltip :content="deckFullTooltip" placement="top">
