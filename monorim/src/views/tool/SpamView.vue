@@ -21,6 +21,7 @@ const action = async () => {
   store.type = query.type;
   store.code = query.code;
   store.limit = query.limit;
+  store.tab = activeTab.value;
   cpBtnReset();
 };
 
@@ -60,6 +61,7 @@ onMounted(() => {
   query.type = store.type;
   query.code = store.code;
   query.limit = store.limit;
+  activeTab.value = store.tab;
 });
 </script>
 

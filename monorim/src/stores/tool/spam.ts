@@ -5,6 +5,7 @@ export const useSpamStore = defineStore("spam", {
     type: "spam_min",
     code: "none",
     limit: 1,
+    tab: "spam",
   }),
   persist: true,
 });
