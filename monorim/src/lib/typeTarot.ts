@@ -17,4 +17,10 @@ type CardDisplay = {
   showDesc: boolean;
 };
 
-export type { Card, CardDisplay };
+type DeckInfo = {
+  name: string;
+  loc: string;
+  full: boolean;
+};
+
+export type { Card, CardDisplay, DeckInfo };

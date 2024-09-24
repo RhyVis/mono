@@ -1,4 +1,4 @@
-package top.rhynia.monotrix.elements.tarot
+package top.rhynia.monotrix.elements.data.tarot
 
 import kotlinx.serialization.Serializable
 

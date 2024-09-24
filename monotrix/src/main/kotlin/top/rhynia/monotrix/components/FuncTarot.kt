@@ -5,8 +5,9 @@ import kotlinx.serialization.json.Json
 import org.springframework.stereotype.Component
 import org.springframework.web.util.UriComponentsBuilder
 import top.rhynia.monotrix.configs.MainConf
-import top.rhynia.monotrix.elements.tarot.TarotCardDrawn
-import top.rhynia.monotrix.elements.tarot.TarotDeck
+import top.rhynia.monotrix.elements.data.tarot.TarotCardDrawn
+import top.rhynia.monotrix.elements.data.tarot.TarotDeck
+import top.rhynia.monotrix.elements.data.tarot.TarotDeckInfo
 import top.rhynia.monotrix.elements.web.json.ConfMapping
 import top.rhynia.monotrix.elements.web.post.PostTarot
 import top.rhynia.monotrix.elements.web.result.PackedResult
@@ -19,6 +20,7 @@ import kotlin.random.Random
 class FuncTarot(private val conf: MainConf) {
     private val decks = mutableMapOf<String, TarotDeck>()
     private val deckMainOnly = mutableMapOf<String, Boolean>()
+    private val deckInfo = mutableMapOf<String, TarotDeckInfo>()
 
     fun init() {
         val mainConfUri = UriComponentsBuilder.fromHttpUrl(conf.endpoint)
@@ -29,6 +31,7 @@ class FuncTarot(private val conf: MainConf) {
                 .pathSegment("tarot", "conf", entry.value).encode().build().toUriString()
             val deck = Json.decodeFromString<TarotDeck>(HttpUtil.get(deckFileUri))
             decks[entry.key] = deck
+            deckInfo[entry.key] = deck.buildInfo()
             if (deck.full) {
                 val altName = deck.name + "_main"
                 val alt = TarotDeck(
@@ -72,6 +75,10 @@ class FuncTarot(private val conf: MainConf) {
         val r = draw(post.deck, post.full, post.count)
         log.info("Drawn ${r.map { it.name }}")
         return PackedResult(r)
+    }
+
+    fun deckInfo(): PackedResult {
+        return PackedResult(deckInfo)
     }
 
     private fun drawShuffled(deck: String, count: Int): List<TarotCardDrawn> {

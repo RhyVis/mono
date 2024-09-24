@@ -1,4 +1,4 @@
-package top.rhynia.monotrix.elements.data
+package top.rhynia.monotrix.elements.data.text
 
 import jakarta.persistence.Column
 import jakarta.persistence.Entity
@@ -6,14 +6,14 @@ import jakarta.persistence.GeneratedValue
 import jakarta.persistence.GenerationType
 import jakarta.persistence.Id
 import jakarta.persistence.Table
-import top.rhynia.monotrix.interfaces.data.TextSimpleEntry
+import top.rhynia.monotrix.interfaces.data.EntryText
 
 @Entity
 @Table(name = "spam_max")
-data class TextSpamMax(
+data class EntrySpamMax(
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     override val id: Long,
     @Column(name = "text")
     override var text: String
-) : TextSimpleEntry
+) : EntryText

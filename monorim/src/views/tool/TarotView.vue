@@ -4,9 +4,9 @@ import { reactive, ref, computed, onMounted } from "vue";
 import { useTarotStore } from "@/stores/tool/tarot.ts";
 import { Card, CardDisplay } from "@/lib/typeTarot.ts";
 import CardFrame from "@/components/frame/CardFrame.vue";
-import SelectSimple from "@/components/util/SelectSimple.vue";
 import TarotMain from "@/components/disp/tarot/TarotMain.vue";
 import TarotDesc from "@/components/disp/tarot/TarotDesc.vue";
+import SelectSimple from "@/components/util/SelectSimple.vue";
 
 const store = useTarotStore();
 

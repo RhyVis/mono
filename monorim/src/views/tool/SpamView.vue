@@ -1,9 +1,12 @@
 <script setup lang="ts">
-import { reactive, ref } from "vue";
+import { onMounted, reactive, ref } from "vue";
+import { useSpamStore } from "@/stores/tool/spam.ts";
 import axios from "axios";
 import CardFrame from "@/components/frame/CardFrame.vue";
 import SelectSimple from "@/components/util/SelectSimple.vue";
 import CopyButton from "@/components/util/CopyButton.vue";
+
+const store = useSpamStore();
 
 const query = reactive({
   type: "spam_min",
@@ -15,6 +18,9 @@ const result = ref(["快乐生活每一天，请不要用这个工具的结果�
 const action = async () => {
   const r = (await axios.post("api/spam", query)).data.result as Entry[];
   result.value = r.map((entry) => entry.text);
+  store.type = query.type;
+  store.code = query.code;
+  store.limit = query.limit;
   cpBtnReset();
 };
 
@@ -35,6 +41,9 @@ const changeTab = () => {
     case "mmr":
       query.type = "genshin";
       break;
+    case "meme":
+      query.type = "acgn";
+      break;
     default:
   }
 };
@@ -46,6 +55,12 @@ type Entry = {
   id: number;
   text: string;
 };
+
+onMounted(() => {
+  query.type = store.type;
+  query.code = store.code;
+  query.limit = store.limit;
+});
 </script>
 
 <template>
@@ -76,6 +91,22 @@ type Entry = {
               </el-tooltip>
               <el-tooltip content="明日方舟" placement="top">
                 <el-radio-button label="二游半壁江山" value="arknights" />
+              </el-tooltip>
+            </el-radio-group>
+          </el-form-item>
+        </el-tab-pane>
+        <!--Meme-->
+        <el-tab-pane label="复制粘贴" name="meme">
+          <el-form-item label="使用说明">
+            <span style="text-align: left">我喜欢复制粘贴</span>
+          </el-form-item>
+          <el-form-item label="选择主题">
+            <el-radio-group v-model="query.type">
+              <el-tooltip content="二次元欠图了" placement="top">
+                <el-radio-button label="反二圣经" value="acgn" />
+              </el-tooltip>
+              <el-tooltip content="不知道该怎么分类了" placement="top">
+                <el-radio-button label="纯正低能" value="dinner" />
               </el-tooltip>
             </el-radio-group>
           </el-form-item>

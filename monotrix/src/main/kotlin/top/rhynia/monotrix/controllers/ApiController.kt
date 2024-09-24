@@ -73,6 +73,11 @@ class ApiController(
     fun tarot(@RequestBody post: PostTarot): PackedResult {
         return funcTarot.draw(post)
     }
+
+    @GetMapping("/tarot/info")
+    fun tarotInfo(): PackedResult {
+        return funcTarot.deckInfo()
+    }
     // endregion
 
     // region Save
@@ -90,9 +95,9 @@ class ApiController(
     fun saveUpdate(@RequestBody post: PostStrSave): PackedResult {
         try {
             funcSave.updateStr(post.id, post.text, post.note)
-            return PackedResult(0)
+            return PackedResult()
         } catch (e: Exception) {
-            return PackedResult(e)
+            return PackedResult(-1, e)
         }
     }
 
@@ -100,9 +105,9 @@ class ApiController(
     fun saveDelete(@RequestBody post: PostStrSave): PackedResult {
         try {
             funcSave.deleteStr(post.id)
-            return PackedResult(0)
+            return PackedResult()
         } catch (e: Exception) {
-            return PackedResult(e)
+            return PackedResult(-1, e)
         }
     }
     // endregion

@@ -1,6 +1,6 @@
 package top.rhynia.monotrix.interfaces.data
 
-interface TextSimpleEntry {
+interface EntryText {
     val id: Long
     var text: String
 }

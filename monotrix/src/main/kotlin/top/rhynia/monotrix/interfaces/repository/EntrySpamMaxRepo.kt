@@ -2,12 +2,12 @@ package top.rhynia.monotrix.interfaces.repository
 
 import org.springframework.data.jpa.repository.JpaRepository
 import org.springframework.data.jpa.repository.Query
-import top.rhynia.monotrix.elements.data.TextSpamMax
+import top.rhynia.monotrix.elements.data.text.EntrySpamMax
 
-interface TextSpamMaxRepository : JpaRepository<TextSpamMax, Long> {
+interface EntrySpamMaxRepo : JpaRepository<EntrySpamMax, Long> {
     @Query(nativeQuery = true, value = "SELECT * FROM spam_max ORDER BY RAND() LIMIT 1")
-    fun findRand(): TextSpamMax?
+    fun findRand(): EntrySpamMax?
 
     @Query(nativeQuery = true, value = "SELECT * FROM spam_max ORDER BY RAND() LIMIT ?1")
-    fun findRand(limit: Int): List<TextSpamMax>
+    fun findRand(limit: Int): List<EntrySpamMax>
 }
