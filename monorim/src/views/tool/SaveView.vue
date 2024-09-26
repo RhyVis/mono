@@ -1,6 +1,6 @@
 <script setup lang="ts">
-import axios from "axios";
 import { reactive, ref } from "vue";
+import { apiPost, apiPut } from "@/lib/util/apiMethods.ts";
 import CardFrame from "@/components/frame/CardFrame.vue";
 import CopyButton from "@/components/util/CopyButton.vue";
 import ReadButton from "@/components/util/ReadButton.vue";
@@ -25,7 +25,7 @@ const actStore = async () => {
     alert("不要空置内容");
     return;
   }
-  const dt = (await axios.put("/api/save", query)).data.result;
+  const dt = (await apiPut("/api/save", query)).data;
   if (dt === 0) {
     result.sign = "存储成功";
   } else {
@@ -36,7 +36,7 @@ const actStore = async () => {
 
 const actSelect = async () => {
   cpBtnReset();
-  const r = (await axios.post("/api/save", query)).data.result;
+  const r = (await apiPost("/api/save", query)).data;
   const { id, text, note } = r;
   if (id < 0) {
     result.sign = "读取失败";

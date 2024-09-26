@@ -1,7 +1,7 @@
 package top.rhynia.monotrix.components
 
 import com.github.houbb.opencc4j.util.ZhConverterUtil
-import top.rhynia.monotrix.elements.web.result.PackedResult
+import top.rhynia.monotrix.elements.ApiResponse
 import top.rhynia.monotrix.util.DictAssembly.dictEmojiToHan
 import top.rhynia.monotrix.util.DictAssembly.dictHanToEmoji
 import top.rhynia.monotrix.util.DictAssembly.dictHanToSpark
@@ -10,8 +10,8 @@ import top.rhynia.monotrix.util.DictAssembly.dictUnicodeDiff
 import kotlin.random.Random
 
 object FuncDict {
-    fun codex(text: String, type: String = "nmsl", code: Boolean = true): PackedResult {
-        return PackedResult(codexRaw(text, type, code))
+    fun codex(text: String, type: String = "nmsl", code: Boolean = true): ApiResponse {
+        return ApiResponse(codexRaw(text, type, code))
     }
 
     fun codexRaw(text: String, type: String = "nmsl", code: Boolean = true): String {

@@ -1,8 +1,8 @@
-package top.rhynia.monotrix.elements.web.result
+package top.rhynia.monotrix.elements
 
-data class PackedResult(
+data class ApiResponse(
     val code: Int,
-    val result: Any
+    val data: Any
 ) {
     /**
      * Return a 0, 0 only object

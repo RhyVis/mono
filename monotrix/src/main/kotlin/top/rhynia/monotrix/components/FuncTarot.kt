@@ -5,12 +5,12 @@ import kotlinx.serialization.json.Json
 import org.springframework.stereotype.Component
 import org.springframework.web.util.UriComponentsBuilder
 import top.rhynia.monotrix.configs.MainConf
+import top.rhynia.monotrix.elements.ApiResponse
 import top.rhynia.monotrix.elements.data.tarot.TarotCardDrawn
 import top.rhynia.monotrix.elements.data.tarot.TarotDeck
 import top.rhynia.monotrix.elements.data.tarot.TarotDeckInfo
 import top.rhynia.monotrix.elements.web.json.ConfMapping
 import top.rhynia.monotrix.elements.web.post.PostTarot
-import top.rhynia.monotrix.elements.web.result.PackedResult
 import top.rhynia.monotrix.interfaces.Log
 import top.rhynia.monotrix.interfaces.Log.Companion.log
 import kotlin.random.Random
@@ -70,15 +70,15 @@ class FuncTarot(private val conf: MainConf) {
         }
     }
 
-    fun draw(post: PostTarot): PackedResult {
+    fun draw(post: PostTarot): ApiResponse {
         log.info("Received request of $post")
         val r = draw(post.deck, post.full, post.count)
         log.info("Drawn ${r.map { it.name }}")
-        return PackedResult(r)
+        return ApiResponse(r)
     }
 
-    fun deckInfo(): PackedResult {
-        return PackedResult(deckInfo)
+    fun deckInfo(): ApiResponse {
+        return ApiResponse(deckInfo)
     }
 
     private fun drawShuffled(deck: String, count: Int): List<TarotCardDrawn> {

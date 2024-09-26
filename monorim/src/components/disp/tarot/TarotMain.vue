@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import type { CardDisplay } from "@/lib/typeTarot.ts";
+import type { CardDisplay } from "@/lib/type/typeTarot.ts";
 
 defineProps<{
   card: CardDisplay;

@@ -12,12 +12,12 @@ import top.rhynia.monotrix.components.FuncNav
 import top.rhynia.monotrix.components.FuncSave
 import top.rhynia.monotrix.components.FuncSpam
 import top.rhynia.monotrix.components.FuncTarot
+import top.rhynia.monotrix.elements.ApiResponse
 import top.rhynia.monotrix.elements.web.post.PostCodex
 import top.rhynia.monotrix.elements.web.post.PostSpam
 import top.rhynia.monotrix.elements.web.post.PostStr
 import top.rhynia.monotrix.elements.web.post.PostStrSave
 import top.rhynia.monotrix.elements.web.post.PostTarot
-import top.rhynia.monotrix.elements.web.result.PackedResult
 
 @RestController
 @RequestMapping("/api")
@@ -30,93 +30,93 @@ class ApiController(
 ) {
 
     @RequestMapping("/")
-    fun root(): String {
-        return "API Root"
+    fun root(): ApiResponse {
+        return ApiResponse("API Root")
     }
 
     // region Auth
     @PostMapping("/auth")
-    fun auth(@RequestBody post: PostStr): PackedResult {
-        return PackedResult(funcAuth.authHash(post.text))
+    fun auth(@RequestBody post: PostStr): ApiResponse {
+        return ApiResponse(funcAuth.authHash(post.text))
     }
     // endregion
 
     // region Codex
     @GetMapping("/codex")
-    fun codex(): String {
-        return FuncDict.codexRaw("玩玩抽象差不多得了")
+    fun codex(): ApiResponse {
+        return FuncDict.codex("玩玩抽象差不多得了")
     }
 
     @PostMapping("/codex")
-    fun codex(@RequestBody post: PostCodex): PackedResult {
+    fun codex(@RequestBody post: PostCodex): ApiResponse {
         return FuncDict.codex(post.text, post.type, post.code)
     }
     // endregion
 
     // region Spam
     @GetMapping("/spam")
-    fun spam(): String {
-        return funcSpam.fetchSpam("genshin", "")[0].text
+    fun spam(): ApiResponse {
+        return ApiResponse(funcSpam.fetchSpam("genshin", ""))
     }
 
     @PostMapping("/spam")
-    fun spam(@RequestBody post: PostSpam): PackedResult {
+    fun spam(@RequestBody post: PostSpam): ApiResponse {
         return funcSpam.fetchSpam(post)
     }
     // endregion
 
     // region Tarot
     @GetMapping("/tarot")
-    fun tarot(): String {
-        return funcTarot.draw("waite", true, 1)[0].name
+    fun tarot(): ApiResponse {
+        return ApiResponse(funcTarot.draw("waite", true, 1)[0].name)
     }
 
     @PostMapping("/tarot")
-    fun tarot(@RequestBody post: PostTarot): PackedResult {
+    fun tarot(@RequestBody post: PostTarot): ApiResponse {
         return funcTarot.draw(post)
     }
 
     @GetMapping("/tarot/info")
-    fun tarotInfo(): PackedResult {
+    fun tarotInfo(): ApiResponse {
         return funcTarot.deckInfo()
     }
     // endregion
 
     // region Save
     @GetMapping("/save")
-    fun save(): String {
-        return funcSave.queryStr(0).text
+    fun save(): ApiResponse {
+        return ApiResponse(funcSave.queryStr(0))
     }
 
     @PostMapping("/save")
-    fun save(@RequestBody post: PostStrSave): PackedResult {
-        return PackedResult(funcSave.queryStr(post.id))
+    fun save(@RequestBody post: PostStrSave): ApiResponse {
+        return ApiResponse(funcSave.queryStr(post.id))
     }
 
     @RequestMapping("/save", method = [RequestMethod.PUT])
-    fun saveUpdate(@RequestBody post: PostStrSave): PackedResult {
+    fun saveUpdate(@RequestBody post: PostStrSave): ApiResponse {
         try {
             funcSave.updateStr(post.id, post.text, post.note)
-            return PackedResult()
+            return ApiResponse()
         } catch (e: Exception) {
-            return PackedResult(-1, e)
+            return ApiResponse(-1, e)
         }
     }
 
     @RequestMapping("/save", method = [RequestMethod.DELETE])
-    fun saveDelete(@RequestBody post: PostStrSave): PackedResult {
+    fun saveDelete(@RequestBody post: PostStrSave): ApiResponse {
         try {
             funcSave.deleteStr(post.id)
-            return PackedResult()
+            return ApiResponse()
         } catch (e: Exception) {
-            return PackedResult(-1, e)
+            return ApiResponse(-1, e)
         }
     }
     // endregion
 
     // region Nav
     @GetMapping("/nav")
-    fun navIndexList(): PackedResult {
+    fun navIndexList(): ApiResponse {
         return funcNav.getIndexList()
     }
     // endregion

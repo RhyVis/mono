@@ -1,11 +1,11 @@
-import axios from "axios";
 import CryptoJS from "crypto-js";
+import { apiPost } from "@/lib/util/apiMethods.ts";
 
 const validateToken = async (token: string) => {
   if (token.length > 0) {
     try {
       let hashCode = CryptoJS.SHA256(token).toString(CryptoJS.enc.Hex);
-      return (await axios.post("api/auth", { text: hashCode })).data.result as boolean;
+      return (await apiPost("api/auth", { text: hashCode })).data as boolean;
     } catch (error) {
       console.error(error);
       return false;

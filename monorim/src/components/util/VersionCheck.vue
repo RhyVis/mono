@@ -50,7 +50,7 @@ onMounted(async () => {
     const versionFetch = (await axios.get("/version.json")).data.compileTime as number;
     if (versionFetch != 0) {
       versionRemote.value = versionFetch;
-      console.log(`Remote version: ${versionRemoteF.value} | Local version: ${versionLocalF}`);
+      console.log(`Remote version: ${versionRemote.value} | Local version: ${versionLocalF}`);
       if (versionLocal != versionFetch) {
         versionState.value = 2;
       } else {

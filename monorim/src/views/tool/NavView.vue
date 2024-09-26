@@ -1,7 +1,7 @@
 <script setup lang="ts">
-import CardFrame from "@/components/frame/CardFrame.vue";
-import axios from "axios";
 import { Ref, ref } from "vue";
+import { apiGet } from "@/lib/util/apiMethods.ts";
+import CardFrame from "@/components/frame/CardFrame.vue";
 
 type NavData = {
   id: number;
@@ -12,8 +12,8 @@ type NavData = {
 
 let data: Ref<NavData[]> = ref([]);
 
-axios.get("/api/nav").then((res) => {
-  data.value = res.data.result;
+apiGet("/api/nav").then((res) => {
+  data.value = res.data;
 });
 </script>
 

@@ -1,5 +1,5 @@
 import { defineStore } from "pinia";
-import { validateToken } from "@/lib/utilAuth.ts";
+import { validateToken } from "@/lib/util/authColl.ts";
 
 export const useAuthStore = defineStore("auth", {
   state: () => ({

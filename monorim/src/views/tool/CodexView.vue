@@ -1,11 +1,11 @@
 <script setup lang="ts">
 import { reactive, ref } from "vue";
+import { apiPost } from "@/lib/util/apiMethods.ts";
 import { VideoPlay } from "@element-plus/icons-vue";
 import CardFrame from "@/components/frame/CardFrame.vue";
 import CopyButton from "@/components/util/CopyButton.vue";
 import ReadButton from "@/components/util/ReadButton.vue";
 import ClearButton from "@/components/util/ClearButton.vue";
-import axios from "axios";
 
 const query = reactive({
   text: "哦牛",
@@ -21,12 +21,12 @@ const action = async () => {
   if (query.text.length === 0) {
     result.value = "你不输入你转什么";
   } else {
-    const r = await axios.post("api/codex", {
+    const r = await apiPost("api/codex", {
       text: query.text,
       type: query.type,
       code: !query.decode,
     });
-    result.value = r.data.result;
+    result.value = r.data;
     cpBtnKeyReset();
   }
 };

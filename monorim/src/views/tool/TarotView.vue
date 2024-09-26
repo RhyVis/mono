@@ -1,8 +1,8 @@
 <script setup lang="ts">
-import axios from "axios";
 import { reactive, ref, computed, onMounted, Ref } from "vue";
 import { useTarotStore } from "@/stores/tool/tarot.ts";
-import { Card, CardDisplay, DeckInfo } from "@/lib/typeTarot.ts";
+import { apiGet, apiPost } from "@/lib/util/apiMethods.ts";
+import { Card, CardDisplay, DeckInfo } from "@/lib/type/typeTarot.ts";
 import CardFrame from "@/components/frame/CardFrame.vue";
 import TarotMain from "@/components/disp/tarot/TarotMain.vue";
 import TarotDesc from "@/components/disp/tarot/TarotDesc.vue";
@@ -26,9 +26,9 @@ let deckInfoMap: Ref<DeckInfoInterface> = ref({});
 let deckInfoList: Ref<DeckInfo[]> = ref([]);
 let deckInfoSelect: Ref<any[]> = ref([]);
 
-axios.get("api/tarot/info").then((res) => {
-  deckInfoMap.value = res.data.result;
-  const list = Object.values(res.data.result) as DeckInfo[];
+apiGet("api/tarot/info").then((res) => {
+  deckInfoMap.value = res.data;
+  const list = Object.values(res.data) as DeckInfo[];
   deckInfoList.value = list;
   deckInfoSelect.value = list.map((item) => {
     return {
@@ -47,7 +47,7 @@ const deckFullTooltip = computed(() => (deckFull.value ? "完整卡组包括小�
 
 const drawDeck = async () => {
   store.deck = query.deck;
-  const respond = (await axios.post("/api/tarot", query)).data.result as Card[];
+  const respond = (await apiPost("/api/tarot", query)).data as Card[];
   deckResult.value = respond.map((card) => {
     return {
       data: card,

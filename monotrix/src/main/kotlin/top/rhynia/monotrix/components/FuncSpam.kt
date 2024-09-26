@@ -1,6 +1,7 @@
 package top.rhynia.monotrix.components
 
 import org.springframework.stereotype.Service
+import top.rhynia.monotrix.elements.ApiResponse
 import top.rhynia.monotrix.elements.data.text.EntryGachaAk
 import top.rhynia.monotrix.elements.data.text.EntryGachaGs
 import top.rhynia.monotrix.elements.data.text.EntryMemeAcgn
@@ -9,7 +10,6 @@ import top.rhynia.monotrix.elements.data.text.EntrySimple
 import top.rhynia.monotrix.elements.data.text.EntrySpamMax
 import top.rhynia.monotrix.elements.data.text.EntrySpamMin
 import top.rhynia.monotrix.elements.web.post.PostSpam
-import top.rhynia.monotrix.elements.web.result.PackedResult
 import top.rhynia.monotrix.interfaces.data.EntryText
 import top.rhynia.monotrix.interfaces.repository.EntryGachaAkRepo
 import top.rhynia.monotrix.interfaces.repository.EntryGachaGsRepo
@@ -53,8 +53,8 @@ class FuncSpam(
         }
     }
 
-    fun fetchSpam(post: PostSpam): PackedResult {
-        return PackedResult(fetchSpam(post.type, post.code, post.limit))
+    fun fetchSpam(post: PostSpam): ApiResponse {
+        return ApiResponse(fetchSpam(post.type, post.code, post.limit))
     }
 
     private fun fetchArknights(): EntryGachaAk {

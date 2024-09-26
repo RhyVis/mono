@@ -1,6 +1,6 @@
 import { createRouter, createWebHashHistory, RouteRecordRaw } from "vue-router";
 import { useAuthStore } from "@/stores/auth.ts";
-import { validateToken } from "@/lib/utilAuth.ts";
+import { validateToken } from "@/lib/util/authColl.ts";
 import routerTool from "@/routers/routerTool.ts";
 import HomeView from "@/views/HomeView.vue";
 

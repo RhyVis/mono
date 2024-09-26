@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import { onMounted, reactive, ref } from "vue";
 import { useSpamStore } from "@/stores/tool/spam.ts";
-import axios from "axios";
+import { apiPost } from "@/lib/util/apiMethods.ts";
 import CardFrame from "@/components/frame/CardFrame.vue";
 import SelectSimple from "@/components/util/SelectSimple.vue";
 import CopyButton from "@/components/util/CopyButton.vue";
@@ -16,7 +16,7 @@ const query = reactive({
 const result = ref(["快乐生活每一天，请不要用这个工具的结果来攻击他人哦😊", "仅供学习交流使用，由您不当使用造成的后果，将由您承担"]);
 
 const action = async () => {
-  const r = (await axios.post("api/spam", query)).data.result as Entry[];
+  const r = (await apiPost("api/spam", query)).data as Entry[];
   result.value = r.map((entry) => entry.text);
   store.type = query.type;
   store.code = query.code;
