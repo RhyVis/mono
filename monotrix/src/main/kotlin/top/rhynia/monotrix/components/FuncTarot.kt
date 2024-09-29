@@ -5,10 +5,10 @@ import kotlinx.serialization.json.Json
 import org.springframework.stereotype.Component
 import org.springframework.web.util.UriComponentsBuilder
 import top.rhynia.monotrix.configs.MainConf
-import top.rhynia.monotrix.elements.ApiResponse
 import top.rhynia.monotrix.elements.data.tarot.TarotCardDrawn
 import top.rhynia.monotrix.elements.data.tarot.TarotDeck
 import top.rhynia.monotrix.elements.data.tarot.TarotDeckInfo
+import top.rhynia.monotrix.elements.web.ApiResponse
 import top.rhynia.monotrix.elements.web.json.ConfMapping
 import top.rhynia.monotrix.elements.web.post.PostTarot
 import top.rhynia.monotrix.interfaces.Log

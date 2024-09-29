@@ -1,7 +1,6 @@
 package top.rhynia.monotrix.components
 
 import org.springframework.stereotype.Service
-import top.rhynia.monotrix.elements.ApiResponse
 import top.rhynia.monotrix.elements.data.text.EntryGachaAk
 import top.rhynia.monotrix.elements.data.text.EntryGachaGs
 import top.rhynia.monotrix.elements.data.text.EntryMemeAcgn
@@ -9,6 +8,7 @@ import top.rhynia.monotrix.elements.data.text.EntryMemeDinner
 import top.rhynia.monotrix.elements.data.text.EntrySimple
 import top.rhynia.monotrix.elements.data.text.EntrySpamMax
 import top.rhynia.monotrix.elements.data.text.EntrySpamMin
+import top.rhynia.monotrix.elements.web.ApiResponse
 import top.rhynia.monotrix.elements.web.post.PostSpam
 import top.rhynia.monotrix.interfaces.data.EntryText
 import top.rhynia.monotrix.interfaces.repository.EntryGachaAkRepo
@@ -26,6 +26,7 @@ class FuncSpam(
     private val repoSpamMax: EntrySpamMaxRepo,
     private val repoAcgn: EntryMemeAcgnRepo,
     private val repoDinner: EntryMemeDinnerRepo,
+    private val funcDict: FuncDict
 ) {
     fun fetchSpam(type: String, code: String, limit: Int = 1): List<EntryText> {
         if (limit > 1) {
@@ -37,7 +38,7 @@ class FuncSpam(
                 "acgn" -> fetchAcgn(limit)
                 "dinner" -> fetchDinner(limit)
                 else -> listOf(EntrySimple())
-            }.map { EntrySimple(it.id, FuncDict.codexRaw(it.text, code)) }
+            }.map { EntrySimple(it.id, funcDict.codexRaw(it.text, code)) }
         } else {
             val result = when (type) {
                 "arknights" -> fetchArknights()
@@ -48,7 +49,7 @@ class FuncSpam(
                 "dinner" -> fetchDinner()
                 else -> EntrySimple()
             }
-            result.text = FuncDict.codexRaw(result.text, code)
+            result.text = funcDict.codexRaw(result.text, code)
             return listOf(result)
         }
     }

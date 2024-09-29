@@ -1,7 +1,8 @@
 package top.rhynia.monotrix.components
 
 import com.github.houbb.opencc4j.util.ZhConverterUtil
-import top.rhynia.monotrix.elements.ApiResponse
+import org.springframework.stereotype.Component
+import top.rhynia.monotrix.elements.web.ApiResponse
 import top.rhynia.monotrix.util.DictAssembly.dictEmojiToHan
 import top.rhynia.monotrix.util.DictAssembly.dictHanToEmoji
 import top.rhynia.monotrix.util.DictAssembly.dictHanToSpark
@@ -9,7 +10,8 @@ import top.rhynia.monotrix.util.DictAssembly.dictSparkToHan
 import top.rhynia.monotrix.util.DictAssembly.dictUnicodeDiff
 import kotlin.random.Random
 
-object FuncDict {
+@Component
+class FuncDict {
     fun codex(text: String, type: String = "nmsl", code: Boolean = true): ApiResponse {
         return ApiResponse(codexRaw(text, type, code))
     }
@@ -24,33 +26,19 @@ object FuncDict {
         }
     }
 
-    private fun codeEmoji(text: String): String {
-        return replaceRefDictArray(text, dictHanToEmoji)
-    }
+    private fun codeEmoji(text: String): String = replaceRefDictArray(text, dictHanToEmoji)
 
-    private fun decodeEmoji(text: String): String {
-        return replaceRefDict(text, dictEmojiToHan)
-    }
+    private fun decodeEmoji(text: String): String = replaceRefDict(text, dictEmojiToHan)
 
-    private fun codeSpark(text: String): String {
-        return replaceRefDict(text, dictHanToSpark)
-    }
+    private fun codeSpark(text: String): String = replaceRefDict(text, dictHanToSpark)
 
-    private fun decodeSpark(text: String): String {
-        return replaceRefDict(text, dictSparkToHan)
-    }
+    private fun decodeSpark(text: String): String = replaceRefDict(text, dictSparkToHan)
 
-    private fun codeUnicodeDiff(text: String): String {
-        return replaceRefDict(text, dictUnicodeDiff)
-    }
+    private fun codeUnicodeDiff(text: String): String = replaceRefDict(text, dictUnicodeDiff)
 
-    private fun codeTrad(text: String): String {
-        return ZhConverterUtil.toTraditional(text)
-    }
+    private fun codeTrad(text: String): String = ZhConverterUtil.toTraditional(text)
 
-    private fun decodeTrad(text: String): String {
-        return ZhConverterUtil.toSimple(text)
-    }
+    private fun decodeTrad(text: String): String = ZhConverterUtil.toSimple(text)
 
     private fun replaceRefDictArray(text: String, dict: Map<String, Array<String>>): String {
         val result = StringBuilder()

@@ -1,8 +1,8 @@
 package top.rhynia.monotrix.components
 
 import org.springframework.stereotype.Service
-import top.rhynia.monotrix.elements.ApiResponse
 import top.rhynia.monotrix.elements.data.text.EntryStrNav
+import top.rhynia.monotrix.elements.web.ApiResponse
 import top.rhynia.monotrix.interfaces.repository.EntryStrNavRepo
 
 @Service

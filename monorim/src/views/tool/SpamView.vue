@@ -18,10 +18,7 @@ const result = ref(["快乐生活每一天，请不要用这个工具的结果�
 const action = async () => {
   const r = (await apiPost("api/spam", query)).data as Entry[];
   result.value = r.map((entry) => entry.text);
-  store.type = query.type;
-  store.code = query.code;
-  store.limit = query.limit;
-  store.tab = activeTab.value;
+  store.update(query, activeTab.value)
   cpBtnReset();
 };
 

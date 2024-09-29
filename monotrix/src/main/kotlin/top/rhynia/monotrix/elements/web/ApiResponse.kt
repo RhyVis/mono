@@ -1,4 +1,4 @@
-package top.rhynia.monotrix.elements
+package top.rhynia.monotrix.elements.web
 
 data class ApiResponse(
     val code: Int,
@@ -13,4 +13,8 @@ data class ApiResponse(
      * Return a 0, data object
      */
     constructor(data: Any) : this(0, data)
+
+    companion object {
+        fun fail(data: Any): ApiResponse = ApiResponse(-1, data)
+    }
 }

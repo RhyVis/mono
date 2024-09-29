@@ -11,11 +11,11 @@ data class TarotCard(
     val desc: TarotDesc
 ) {
     fun buildDrawn(imgEndpoint: String = "", reverse: Boolean = false) = TarotCardDrawn(
-        index = this.index,
-        name = this.name,
-        loc = this.loc,
-        img = imgEndpoint + "/" + this.img,
-        rev = reverse,
-        desc = this.desc
+        index,
+        name,
+        loc,
+        "$imgEndpoint/$img",
+        reverse,
+        desc
     )
 }

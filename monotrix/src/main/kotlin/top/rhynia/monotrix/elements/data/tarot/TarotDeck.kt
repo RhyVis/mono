@@ -10,11 +10,9 @@ data class TarotDeck(
     val hasR: Boolean,
     val deck: List<TarotCard>
 ) {
-    fun buildInfo(): TarotDeckInfo {
-        return TarotDeckInfo(
-            name = name,
-            loc = loc,
-            full = full,
-        )
-    }
+    fun buildInfo(): TarotDeckInfo = TarotDeckInfo(
+        name,
+        loc,
+        full,
+    )
 }
