@@ -36,4 +36,21 @@ async function apiDelete(url: string): Promise<ApiResponse> {
   return (await instance.delete(url)).data as ApiResponse;
 }
 
-export { apiGet, apiPost, apiPut, apiDelete };
+/**
+ * Unified post method
+ * @param url
+ * @param sArr
+ * @param iArr
+ * @param bArr
+ */
+async function uApiPost(url: string, sArr?: string[], iArr?: number[], bArr?: boolean[]): Promise<ApiResponse> {
+  return (
+    await instance.post(url, {
+      sArr: sArr || [],
+      iArr: iArr || [],
+      bArr: bArr || [],
+    })
+  ).data as ApiResponse;
+}
+
+export { apiGet, apiPost, apiPut, apiDelete, uApiPost };

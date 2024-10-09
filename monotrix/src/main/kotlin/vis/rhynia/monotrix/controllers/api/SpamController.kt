@@ -7,7 +7,7 @@ import org.springframework.web.bind.annotation.RequestMapping
 import org.springframework.web.bind.annotation.RestController
 import vis.rhynia.monotrix.components.FuncSpam
 import vis.rhynia.monotrix.elements.web.ApiResponse
-import vis.rhynia.monotrix.elements.web.post.PostSpam
+import vis.rhynia.monotrix.elements.web.post.PostUnify
 
 @RestController
 @RequestMapping("/api")
@@ -19,6 +19,13 @@ class SpamController(
 
     @PostMapping("/spam")
     fun postSpam(
-        @RequestBody post: PostSpam,
-    ): ApiResponse = funcSpam.fetchSpam(post)
+        @RequestBody post: PostUnify,
+    ): ApiResponse =
+        ApiResponse(
+            funcSpam.fetchSpam(
+                type = post.sArr[0],
+                code = post.sArr[1],
+                limit = post.iArr[0],
+            ),
+        )
 }

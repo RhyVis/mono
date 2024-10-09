@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { reactive, ref } from "vue";
-import { apiPost } from "@/lib/util/apiMethods.ts";
+import { uApiPost } from "@/lib/util/apiMethods.ts";
 import { VideoPlay } from "@element-plus/icons-vue";
 import CardFrame from "@/components/frame/CardFrame.vue";
 import CopyButton from "@/components/util/CopyButton.vue";
@@ -10,6 +10,8 @@ import ClearButton from "@/components/util/ClearButton.vue";
 const query = reactive({
   text: "哦牛",
   type: "nmsl",
+  key: "wow",
+  ref: "曼波",
   decode: false,
 });
 const result = ref("");
@@ -21,11 +23,7 @@ const action = async () => {
   if (query.text.length === 0) {
     result.value = "你不输入你转什么";
   } else {
-    const r = await apiPost("api/codex", {
-      text: query.text,
-      type: query.type,
-      code: !query.decode,
-    });
+    const r = await uApiPost("api/codex", [query.text, query.type, query.key, query.ref], [], [!query.decode]);
     result.value = r.data;
     cpBtnKeyReset();
   }
@@ -39,7 +37,7 @@ const action = async () => {
         <!-- Abstract -->
         <el-tab-pane label="抽象转换" name="nmsl">
           <el-form-item label="原始文本">
-            <el-input v-model="query.text" type="textarea" placeholder="你不输入你用什么工具？" required></el-input>
+            <el-input v-model="query.text" type="textarea" placeholder="你不输入你用什么工具？" required />
           </el-form-item>
           <el-form-item label="解码抽象">
             <el-tooltip content="只能解析成拼音，并且不全" placement="top">
@@ -50,7 +48,7 @@ const action = async () => {
         <!-- Traditional Chinese -->
         <el-tab-pane label="繁体转换" name="trad">
           <el-form-item label="原始文本">
-            <el-input v-model="query.text" type="textarea" placeholder="你不输入你用什么工具？" required></el-input>
+            <el-input v-model="query.text" type="textarea" placeholder="你不输入你用什么工具？" required />
           </el-form-item>
           <el-form-item label="解码抽象">
             <el-switch v-model="query.decode" />
@@ -59,7 +57,7 @@ const action = async () => {
         <!-- Spark -->
         <el-tab-pane label="火星转换" name="sprk">
           <el-form-item label="原始文本">
-            <el-input v-model="query.text" type="textarea" placeholder="你不输入你用什么工具？" required></el-input>
+            <el-input v-model="query.text" type="textarea" placeholder="你不输入你用什么工具？" required />
           </el-form-item>
           <el-form-item label="解码抽象">
             <el-switch v-model="query.decode" />
@@ -68,7 +66,18 @@ const action = async () => {
         <!-- Unicode diff -->
         <el-tab-pane label="形近转换" name="unid">
           <el-form-item label="原始文本">
-            <el-input v-model="query.text" type="textarea" placeholder="你不输入你用什么工具？" required></el-input>
+            <el-input v-model="query.text" type="textarea" placeholder="你不输入你用什么工具？" required />
+          </el-form-item>
+        </el-tab-pane>
+        <el-tab-pane label="进制加密" name="nary">
+          <el-form-item label="原始文本">
+            <el-input v-model="query.text" type="textarea" placeholder="曼波曼波，哦马集里曼波" required />
+          </el-form-item>
+          <el-form-item label="替换字符">
+            <el-input v-model="query.ref" type="text" placeholder="输入用于替换的文字" />
+          </el-form-item>
+          <el-form-item label="密钥">
+            <el-input v-model="query.key" type="text" placeholder="用于决定特殊的修正" />
           </el-form-item>
         </el-tab-pane>
       </el-tabs>
@@ -78,7 +87,9 @@ const action = async () => {
     </el-form>
     <el-form-item label="操作">
       <el-button type="primary" @click="action">
-        <el-icon><VideoPlay /></el-icon>
+        <el-icon>
+          <VideoPlay />
+        </el-icon>
       </el-button>
     </el-form-item>
     <el-form-item label="工具">

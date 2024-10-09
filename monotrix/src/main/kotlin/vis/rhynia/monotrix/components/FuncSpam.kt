@@ -8,8 +8,7 @@ import vis.rhynia.monotrix.elements.data.text.EntryMemeDinner
 import vis.rhynia.monotrix.elements.data.text.EntrySimple
 import vis.rhynia.monotrix.elements.data.text.EntrySpamMax
 import vis.rhynia.monotrix.elements.data.text.EntrySpamMin
-import vis.rhynia.monotrix.elements.web.ApiResponse
-import vis.rhynia.monotrix.elements.web.post.PostSpam
+import vis.rhynia.monotrix.elements.web.post.PostUnify
 import vis.rhynia.monotrix.enums.SpamType
 import vis.rhynia.monotrix.enums.SpamType.ACGN
 import vis.rhynia.monotrix.enums.SpamType.ARKNIGHTS
@@ -35,8 +34,6 @@ class FuncSpam(
     private val repoDinner: EntryMemeDinnerRepo,
     private val funcCodex: FuncCodex,
 ) {
-    fun fetchSpam(post: PostSpam): ApiResponse = ApiResponse(fetchSpam(post.type, post.code, post.limit))
-
     fun fetchSpam(
         type: String,
         code: String,
@@ -52,7 +49,18 @@ class FuncSpam(
                 ACGN -> fetchAcgn(limit)
                 DINNER -> fetchDinner(limit)
                 else -> listOf(EntrySimple())
-            }.map { EntrySimple(it.id, funcCodex.codexRaw(it.text, code)) }
+            }.map {
+                EntrySimple(
+                    it.id,
+                    funcCodex.code(
+                        PostUnify(
+                            arrayOf(it.text, code),
+                            intArrayOf(),
+                            booleanArrayOf(true),
+                        ),
+                    ),
+                )
+            }
         } else {
             listOf(
                 when (t) {
@@ -63,7 +71,16 @@ class FuncSpam(
                     ACGN -> fetchAcgn()
                     DINNER -> fetchDinner()
                     else -> EntrySimple()
-                }.apply { text = funcCodex.codexRaw(text, code) },
+                }.apply {
+                    text =
+                        funcCodex.code(
+                            PostUnify(
+                                arrayOf(this.text, code),
+                                intArrayOf(),
+                                booleanArrayOf(true),
+                            ),
+                        )
+                },
             )
         }
     }

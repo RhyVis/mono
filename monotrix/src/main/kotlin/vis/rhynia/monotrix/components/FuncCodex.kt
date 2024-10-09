@@ -2,8 +2,9 @@ package vis.rhynia.monotrix.components
 
 import com.github.houbb.opencc4j.util.ZhConverterUtil
 import org.springframework.stereotype.Component
-import vis.rhynia.monotrix.elements.web.ApiResponse
+import vis.rhynia.monotrix.elements.web.post.PostUnify
 import vis.rhynia.monotrix.enums.CodexType
+import vis.rhynia.monotrix.enums.CodexType.NARY
 import vis.rhynia.monotrix.enums.CodexType.NMSL
 import vis.rhynia.monotrix.enums.CodexType.SPRK
 import vis.rhynia.monotrix.enums.CodexType.TRAD
@@ -24,23 +25,36 @@ import kotlin.random.Random
 @Log
 @Component
 class FuncCodex {
-    fun codex(
-        text: String,
-        type: String = "nmsl",
-        code: Boolean = true,
-    ): ApiResponse = ApiResponse(codexRaw(text, type, code))
+    /**
+     * sArr: text, type[, key, ref]
+     * bArr: encode
+     */
+    fun code(post: PostUnify): String {
+        val text = post.sArr[0]
+        val type = post.sArr[1]
+        val encode = post.bArr[0]
 
-    fun codexRaw(
-        text: String,
-        type: String = "nmsl",
-        code: Boolean = true,
-    ): String {
         val t = CodexType.tryGetValue(type.ifBlank { "none" }.uppercase())
         return when (t) {
-            NMSL -> if (code) encodeEmoji(text) else decodeEmoji(text)
-            TRAD -> if (code) encodeTrad(text) else decodeTrad(text)
-            SPRK -> if (code) encodeSpark(text) else decodeSpark(text)
+            NMSL -> if (encode) encodeEmoji(text) else decodeEmoji(text)
+            TRAD -> if (encode) encodeTrad(text) else decodeTrad(text)
+            SPRK -> if (encode) encodeSpark(text) else decodeSpark(text)
             UNID -> encodeUnicodeDiff(text)
+            NARY -> {
+                val key = post.sArr[2]
+                val ref = post.sArr[3]
+                if (encode) {
+                    encodeNary(text, key, 6, buildRefMap(ref))
+                } else {
+                    decodeNary(
+                        text,
+                        key,
+                        6,
+                        buildRefMap(ref),
+                    )
+                }
+            }
+
             else -> text
         }
     }
@@ -73,7 +87,19 @@ class FuncCodex {
                 }
             } ?: listOf()
 
-        private fun encodeNary(
+        fun buildRefMap(ref: String): Map<Int, String> {
+            val r =
+                if (ref.isBlank() || ref.length < 2) {
+                    "曼波"
+                } else if (ref.length > 9) {
+                    "哈基米"
+                } else {
+                    ref
+                }
+            return r.toCharArray().mapIndexed { i, c -> i to c.toString() }.toMap()
+        }
+
+        fun encodeNary(
             text: String,
             key: String,
             baseShift: Int,
@@ -96,7 +122,7 @@ class FuncCodex {
             return StrUtil.replaceRefMap(ls, ref)
         }
 
-        private fun decodeNary(
+        fun decodeNary(
             encoded: String,
             key: String,
             baseShift: Int,
