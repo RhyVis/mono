@@ -1,0 +1,13 @@
+spring:
+  application:
+    name: monotrix
+  datasource:
+    url: jdbc:mysql://
+    username:
+    password:
+  mvc:
+    view:
+      suffix: .html
+monotrix:
+  endpoint:
+  token:

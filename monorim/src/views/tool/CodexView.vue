@@ -12,7 +12,7 @@ const query = reactive({
   type: "nmsl",
   decode: false,
 });
-const result = ref();
+const result = ref("");
 
 const cpBtnKey = ref(0);
 const cpBtnKeyReset = () => (cpBtnKey.value = new Date().getTime());
@@ -73,7 +73,7 @@ const action = async () => {
         </el-tab-pane>
       </el-tabs>
       <el-form-item label="输出结果">
-        <span>{{ result }}</span>
+        <el-input :value="result" type="text" placeholder="远程备注" readonly />
       </el-form-item>
     </el-form>
     <el-form-item label="操作">
