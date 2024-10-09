@@ -1,5 +1,6 @@
 <script setup lang="ts">
-import { reactive, ref } from "vue";
+import { onMounted, reactive, ref } from "vue";
+import { useCodexStore } from "@/stores/tool/codex.ts";
 import { uApiPost } from "@/lib/util/apiMethods.ts";
 import { VideoPlay } from "@element-plus/icons-vue";
 import CardFrame from "@/components/frame/CardFrame.vue";
@@ -7,10 +8,12 @@ import CopyButton from "@/components/util/CopyButton.vue";
 import ReadButton from "@/components/util/ReadButton.vue";
 import ClearButton from "@/components/util/ClearButton.vue";
 
+const store = useCodexStore();
+
 const query = reactive({
   text: "哦牛",
   type: "nmsl",
-  key: "wow",
+  key: "",
   ref: "曼波",
   decode: false,
 });
@@ -25,21 +28,30 @@ const action = async () => {
   } else {
     const r = await uApiPost("api/codex", [query.text, query.type, query.key, query.ref], [], [!query.decode]);
     result.value = r.data;
+    store.update(query);
     cpBtnKeyReset();
   }
 };
+
+onMounted(() => {
+  query.text = store.text;
+  query.type = store.type;
+  query.key = store.key;
+  query.ref = store.ref;
+  query.decode = store.decode;
+});
 </script>
 
 <template>
   <CardFrame title="抽象翻译器">
     <el-form :model="query" label-width="auto">
-      <el-tabs v-model="query.type">
+      <el-tabs v-model="query.type" @tab-change="query.decode = false">
         <!-- Abstract -->
         <el-tab-pane label="抽象转换" name="nmsl">
           <el-form-item label="原始文本">
             <el-input v-model="query.text" type="textarea" placeholder="你不输入你用什么工具？" required />
           </el-form-item>
-          <el-form-item label="解码抽象">
+          <el-form-item label="解密">
             <el-tooltip content="只能解析成拼音，并且不全" placement="top">
               <el-switch v-model="query.decode" />
             </el-tooltip>
@@ -50,7 +62,7 @@ const action = async () => {
           <el-form-item label="原始文本">
             <el-input v-model="query.text" type="textarea" placeholder="你不输入你用什么工具？" required />
           </el-form-item>
-          <el-form-item label="解码抽象">
+          <el-form-item label="解密">
             <el-switch v-model="query.decode" />
           </el-form-item>
         </el-tab-pane>
@@ -59,7 +71,7 @@ const action = async () => {
           <el-form-item label="原始文本">
             <el-input v-model="query.text" type="textarea" placeholder="你不输入你用什么工具？" required />
           </el-form-item>
-          <el-form-item label="解码抽象">
+          <el-form-item label="解密">
             <el-switch v-model="query.decode" />
           </el-form-item>
         </el-tab-pane>
@@ -69,6 +81,7 @@ const action = async () => {
             <el-input v-model="query.text" type="textarea" placeholder="你不输入你用什么工具？" required />
           </el-form-item>
         </el-tab-pane>
+        <!-- Nary -->
         <el-tab-pane label="进制加密" name="nary">
           <el-form-item label="原始文本">
             <el-input v-model="query.text" type="textarea" placeholder="曼波曼波，哦马集里曼波" required />
@@ -79,10 +92,13 @@ const action = async () => {
           <el-form-item label="密钥">
             <el-input v-model="query.key" type="text" placeholder="用于决定特殊的修正" />
           </el-form-item>
+          <el-form-item label="解密">
+            <el-switch v-model="query.decode" />
+          </el-form-item>
         </el-tab-pane>
       </el-tabs>
       <el-form-item label="输出结果">
-        <el-input :value="result" type="text" placeholder="远程备注" readonly />
+        <el-input :value="result" type="textarea" placeholder="远程备注" readonly />
       </el-form-item>
     </el-form>
     <el-form-item label="操作">

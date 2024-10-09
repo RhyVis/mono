@@ -12,6 +12,7 @@ import vis.rhynia.monotrix.enums.CodexType.UNID
 import vis.rhynia.monotrix.extensions.fillRand
 import vis.rhynia.monotrix.extensions.fillZero
 import vis.rhynia.monotrix.interfaces.Log
+import vis.rhynia.monotrix.interfaces.Log.Companion.log
 import vis.rhynia.monotrix.utils.DictAssembly.dictEmojiToHan
 import vis.rhynia.monotrix.utils.DictAssembly.dictHanToEmoji
 import vis.rhynia.monotrix.utils.DictAssembly.dictHanToSpark
@@ -41,17 +42,22 @@ class FuncCodex {
             SPRK -> if (encode) encodeSpark(text) else decodeSpark(text)
             UNID -> encodeUnicodeDiff(text)
             NARY -> {
-                val key = post.sArr[2]
-                val ref = post.sArr[3]
-                if (encode) {
-                    encodeNary(text, key, 6, buildRefMap(ref))
-                } else {
-                    decodeNary(
-                        text,
-                        key,
-                        6,
-                        buildRefMap(ref),
-                    )
+                try {
+                    val key = post.sArr[2]
+                    val ref = post.sArr[3]
+                    if (encode) {
+                        encodeNary(text, key, 6, buildRefMap(ref))
+                    } else {
+                        decodeNary(
+                            encoded = text,
+                            key = key,
+                            baseShift = 6,
+                            ref = buildRefMap(ref),
+                        )
+                    }
+                } catch (e: Exception) {
+                    log.error("Exception in nary coding, is encoding type faulty?", e)
+                    "内部错误: $text"
                 }
             }
 
@@ -143,7 +149,7 @@ class FuncCodex {
                         val code = naryToInt(slice(22 - length..21), radix) - finalShift
                         code.toChar()
                     }
-                }.toString()
+                }.joinToString("")
         }
     }
 }
