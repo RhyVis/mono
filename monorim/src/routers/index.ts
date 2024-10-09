@@ -1,4 +1,4 @@
-import { createRouter, createWebHashHistory, RouteRecordRaw } from "vue-router";
+import { createRouter, createWebHistory, RouteRecordRaw } from "vue-router";
 import { useAuthStore } from "@/stores/auth.ts";
 import { validateToken } from "@/lib/util/authColl.ts";
 import routerTool from "@/routers/routerTool.ts";
@@ -24,13 +24,13 @@ const routes: RouteRecordRaw[] = [
 ];
 
 const router = createRouter({
-  history: createWebHashHistory(),
+  history: createWebHistory(),
   routes,
 });
 
 router.beforeEach(async (to, _, next) => {
-  const auth = useAuthStore();
   if (to.meta.requireToken) {
+    const auth = useAuthStore();
     const { token } = auth;
     if (token.length == 0) {
       next("/auth");

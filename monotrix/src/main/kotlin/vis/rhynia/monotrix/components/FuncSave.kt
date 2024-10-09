@@ -1,14 +1,14 @@
 package vis.rhynia.monotrix.components
 
 import org.springframework.stereotype.Service
-import vis.rhynia.monotrix.elements.data.text.EntryStrSave
-import vis.rhynia.monotrix.interfaces.repository.EntryStrSaveRepo
+import vis.rhynia.monotrix.elements.data.entity.StrSave
+import vis.rhynia.monotrix.interfaces.repository.StrSaveRepository
 
 @Service
 class FuncSave(
-    private val repo: EntryStrSaveRepo,
+    private val repo: StrSaveRepository,
 ) {
-    fun queryStr(id: Long): EntryStrSave = repo.findById(id).orElse(EntryStrSave(-1, "", ""))
+    fun queryStr(id: Long): StrSave = repo.findById(id).orElse(StrSave(-1, "", ""))
 
     fun updateStr(
         id: Long,
@@ -21,7 +21,7 @@ class FuncSave(
                 it.note = note
                 repo.save(it)
             },
-            { repo.save(EntryStrSave(id, text, note)) },
+            { repo.save(StrSave(id, text, note)) },
         )
     }
 

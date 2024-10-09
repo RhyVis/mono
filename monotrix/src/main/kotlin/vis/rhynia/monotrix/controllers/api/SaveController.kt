@@ -37,7 +37,7 @@ class SaveController(
     }
 
     @DeleteMapping("/save")
-    fun saveDelete(
+    fun deleteSave(
         @RequestBody post: PostStrSave,
     ): ApiResponse {
         try {

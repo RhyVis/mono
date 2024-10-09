@@ -1,4 +1,4 @@
-package vis.rhynia.monotrix.elements.data.text
+package vis.rhynia.monotrix.elements.data.entity
 
 import jakarta.persistence.Column
 import jakarta.persistence.Entity
@@ -10,7 +10,7 @@ import vis.rhynia.monotrix.interfaces.data.EntryText
 
 @Entity
 @Table(name = "spam_min")
-data class EntrySpamMin(
+class SpamMin(
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     override val id: Long,

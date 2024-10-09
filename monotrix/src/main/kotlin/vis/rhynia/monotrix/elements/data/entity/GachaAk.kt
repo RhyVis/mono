@@ -1,4 +1,4 @@
-package vis.rhynia.monotrix.elements.data.text
+package vis.rhynia.monotrix.elements.data.entity
 
 import jakarta.persistence.Column
 import jakarta.persistence.Entity
@@ -9,8 +9,8 @@ import jakarta.persistence.Table
 import vis.rhynia.monotrix.interfaces.data.EntryText
 
 @Entity
-@Table(name = "meme_acgn")
-data class EntryMemeAcgn(
+@Table(name = "gacha_ak")
+class GachaAk(
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     override val id: Long,

@@ -97,9 +97,8 @@ class FuncTarot(
         deck: String,
         count: Int,
     ): List<TarotCardDrawn> {
-        val deckEntity = decks[deck]!!
-        val deckShuffled = deckEntity.deck.shuffled()
-        val deckPicked = deckShuffled.take(count)
+        val deckEntity = decks[deck] ?: return emptyList()
+        val deckPicked = deckEntity.deck.shuffled().take(count)
         val deckImgPrefix =
             UriComponentsBuilder
                 .fromHttpUrl(conf.endpoint)

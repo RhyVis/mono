@@ -1,4 +1,4 @@
-package vis.rhynia.monotrix.elements.data.text
+package vis.rhynia.monotrix.elements.data.entity
 
 import jakarta.persistence.Column
 import jakarta.persistence.Entity
@@ -9,11 +9,11 @@ import jakarta.persistence.Table
 import vis.rhynia.monotrix.interfaces.data.EntryText
 
 @Entity
-@Table(name = "meme_dinner")
-data class EntryMemeDinner(
+@Table(name = "gacha_gs")
+class GachaGs(
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    override var id: Long,
+    override val id: Long,
     @Column(name = "text")
     override var text: String,
 ) : EntryText
