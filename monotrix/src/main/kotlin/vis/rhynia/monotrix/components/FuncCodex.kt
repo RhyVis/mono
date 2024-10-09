@@ -3,17 +3,25 @@ package vis.rhynia.monotrix.components
 import com.github.houbb.opencc4j.util.ZhConverterUtil
 import org.springframework.stereotype.Component
 import vis.rhynia.monotrix.elements.web.ApiResponse
-import vis.rhynia.monotrix.extension.fillRand
-import vis.rhynia.monotrix.extension.fillZero
-import vis.rhynia.monotrix.util.DictAssembly.dictEmojiToHan
-import vis.rhynia.monotrix.util.DictAssembly.dictHanToEmoji
-import vis.rhynia.monotrix.util.DictAssembly.dictHanToSpark
-import vis.rhynia.monotrix.util.DictAssembly.dictSparkToHan
-import vis.rhynia.monotrix.util.DictAssembly.dictUnicodeDiff
-import vis.rhynia.monotrix.util.StrUtil
-import kotlin.math.pow
+import vis.rhynia.monotrix.enums.CodexType
+import vis.rhynia.monotrix.enums.CodexType.NMSL
+import vis.rhynia.monotrix.enums.CodexType.SPRK
+import vis.rhynia.monotrix.enums.CodexType.TRAD
+import vis.rhynia.monotrix.enums.CodexType.UNID
+import vis.rhynia.monotrix.extensions.fillRand
+import vis.rhynia.monotrix.extensions.fillZero
+import vis.rhynia.monotrix.interfaces.Log
+import vis.rhynia.monotrix.utils.DictAssembly.dictEmojiToHan
+import vis.rhynia.monotrix.utils.DictAssembly.dictHanToEmoji
+import vis.rhynia.monotrix.utils.DictAssembly.dictHanToSpark
+import vis.rhynia.monotrix.utils.DictAssembly.dictSparkToHan
+import vis.rhynia.monotrix.utils.DictAssembly.dictUnicodeDiff
+import vis.rhynia.monotrix.utils.NaryUtil.intToNary
+import vis.rhynia.monotrix.utils.NaryUtil.naryToInt
+import vis.rhynia.monotrix.utils.StrUtil
 import kotlin.random.Random
 
+@Log
 @Component
 class FuncCodex {
     fun codex(
@@ -26,14 +34,16 @@ class FuncCodex {
         text: String,
         type: String = "nmsl",
         code: Boolean = true,
-    ): String =
-        when (type) {
-            "nmsl" -> if (code) encodeEmoji(text) else decodeEmoji(text)
-            "trad" -> if (code) encodeTrad(text) else decodeTrad(text)
-            "sprk" -> if (code) encodeSpark(text) else decodeSpark(text)
-            "unid" -> encodeUnicodeDiff(text)
+    ): String {
+        val t = CodexType.tryGetValue(type.ifBlank { "none" }.uppercase())
+        return when (t) {
+            NMSL -> if (code) encodeEmoji(text) else decodeEmoji(text)
+            TRAD -> if (code) encodeTrad(text) else decodeTrad(text)
+            SPRK -> if (code) encodeSpark(text) else decodeSpark(text)
+            UNID -> encodeUnicodeDiff(text)
             else -> text
         }
+    }
 
     companion object {
         private fun encodeEmoji(text: String): String = StrUtil.replaceRefArrMap(text, dictHanToEmoji)
@@ -63,7 +73,7 @@ class FuncCodex {
                 }
             } ?: listOf()
 
-        fun encodeNary(
+        private fun encodeNary(
             text: String,
             key: String,
             baseShift: Int,
@@ -76,17 +86,17 @@ class FuncCodex {
                 text
                     .mapIndexed { i, c ->
                         val randShift = Random.nextInt(4)
-                        val randShiftNaryArr = intToNaryList(randShift, radix).fillZero(2)
+                        val randShiftNaryArr = intToNary(randShift, radix).fillZero(2)
                         val finalShift = baseShift + randShift + keyShiftArr.getOrElse(i) { 0 }
-                        val textNaryArr = intToNaryList(c.code + finalShift, radix)
-                        val sizeNaryArr = intToNaryList(textNaryArr.size, radix).fillZero(4)
+                        val textNaryArr = intToNary(c.code + finalShift, radix)
+                        val sizeNaryArr = intToNary(textNaryArr.size, radix).fillZero(4)
                         textNaryArr.fillRand(16, radix)
                         randShiftNaryArr + sizeNaryArr + textNaryArr
                     }.flatten()
             return StrUtil.replaceRefMap(ls, ref)
         }
 
-        fun decodeNary(
+        private fun decodeNary(
             encoded: String,
             key: String,
             baseShift: Int,
@@ -109,24 +119,5 @@ class FuncCodex {
                     }
                 }.toString()
         }
-
-        private fun intToNaryList(
-            int: Int,
-            radix: Int = 2,
-        ): MutableList<Int> {
-            if (radix < 2) throw IllegalArgumentException("radix must be at least 2")
-            return mutableListOf<Int>().apply {
-                var i = int
-                while (i > 0) {
-                    add(0, i % radix)
-                    i /= radix
-                }
-            }
-        }
-
-        private fun naryToInt(
-            nary: List<Int>,
-            radix: Int = 2,
-        ): Int = nary.reversed().mapIndexed { i, n -> n * radix.toDouble().pow(i).toInt() }.sum()
     }
 }

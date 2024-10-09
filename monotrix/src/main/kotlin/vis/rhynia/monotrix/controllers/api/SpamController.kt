@@ -15,7 +15,7 @@ class SpamController(
     private val funcSpam: FuncSpam,
 ) {
     @GetMapping("/spam")
-    fun getSpam(): ApiResponse = ApiResponse(funcSpam.fetchSpam("genshin", ""))
+    fun getSpam(): ApiResponse = ApiResponse(funcSpam.fetchSpam("genshin", "none"))
 
     @PostMapping("/spam")
     fun postSpam(

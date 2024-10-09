@@ -1,4 +1,4 @@
-package vis.rhynia.monotrix.extension
+package vis.rhynia.monotrix.extensions
 
 import kotlin.random.Random
 

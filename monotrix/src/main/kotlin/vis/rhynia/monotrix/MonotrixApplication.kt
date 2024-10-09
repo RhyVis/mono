@@ -5,7 +5,7 @@ import org.springframework.boot.context.properties.ConfigurationPropertiesScan
 import org.springframework.boot.runApplication
 
 @SpringBootApplication
-@ConfigurationPropertiesScan("top.rhynia.monotrix.configs")
+@ConfigurationPropertiesScan("vis.rhynia.monotrix.configs")
 class MonotrixApplication
 
 fun main(args: Array<String>) {

@@ -1,4 +1,4 @@
-package vis.rhynia.monotrix.util
+package vis.rhynia.monotrix.utils
 
 import cn.hutool.core.io.resource.ResourceUtil
 import vis.rhynia.monotrix.interfaces.Log

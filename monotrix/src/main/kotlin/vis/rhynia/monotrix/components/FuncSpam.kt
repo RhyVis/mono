@@ -10,6 +10,13 @@ import vis.rhynia.monotrix.elements.data.text.EntrySpamMax
 import vis.rhynia.monotrix.elements.data.text.EntrySpamMin
 import vis.rhynia.monotrix.elements.web.ApiResponse
 import vis.rhynia.monotrix.elements.web.post.PostSpam
+import vis.rhynia.monotrix.enums.SpamType
+import vis.rhynia.monotrix.enums.SpamType.ACGN
+import vis.rhynia.monotrix.enums.SpamType.ARKNIGHTS
+import vis.rhynia.monotrix.enums.SpamType.DINNER
+import vis.rhynia.monotrix.enums.SpamType.GENSHIN
+import vis.rhynia.monotrix.enums.SpamType.SPAM_MAX
+import vis.rhynia.monotrix.enums.SpamType.SPAM_MIN
 import vis.rhynia.monotrix.interfaces.data.EntryText
 import vis.rhynia.monotrix.interfaces.repository.EntryGachaAkRepo
 import vis.rhynia.monotrix.interfaces.repository.EntryGachaGsRepo
@@ -28,38 +35,38 @@ class FuncSpam(
     private val repoDinner: EntryMemeDinnerRepo,
     private val funcCodex: FuncCodex,
 ) {
+    fun fetchSpam(post: PostSpam): ApiResponse = ApiResponse(fetchSpam(post.type, post.code, post.limit))
+
     fun fetchSpam(
         type: String,
         code: String,
         limit: Int = 1,
     ): List<EntryText> {
-        if (limit > 1) {
-            return when (type) {
-                "arknights" -> fetchArknights(limit)
-                "genshin" -> fetchGenshin(limit)
-                "spam_min" -> fetchSpamMin(limit)
-                "spam_max" -> fetchSpamMax(limit)
-                "acgn" -> fetchAcgn(limit)
-                "dinner" -> fetchDinner(limit)
+        val t = SpamType.tryGetValue(type.ifBlank { "none" }.uppercase())
+        return if (limit > 1) {
+            when (t) {
+                ARKNIGHTS -> fetchArknights(limit)
+                GENSHIN -> fetchGenshin(limit)
+                SPAM_MIN -> fetchSpamMin(limit)
+                SPAM_MAX -> fetchSpamMax(limit)
+                ACGN -> fetchAcgn(limit)
+                DINNER -> fetchDinner(limit)
                 else -> listOf(EntrySimple())
             }.map { EntrySimple(it.id, funcCodex.codexRaw(it.text, code)) }
         } else {
-            val result =
-                when (type) {
-                    "arknights" -> fetchArknights()
-                    "genshin" -> fetchGenshin()
-                    "spam_min" -> fetchSpamMin()
-                    "spam_max" -> fetchSpamMax()
-                    "acgn" -> fetchAcgn()
-                    "dinner" -> fetchDinner()
+            listOf(
+                when (t) {
+                    ARKNIGHTS -> fetchArknights()
+                    GENSHIN -> fetchGenshin()
+                    SPAM_MIN -> fetchSpamMin()
+                    SPAM_MAX -> fetchSpamMax()
+                    ACGN -> fetchAcgn()
+                    DINNER -> fetchDinner()
                     else -> EntrySimple()
-                }
-            result.text = funcCodex.codexRaw(result.text, code)
-            return listOf(result)
+                }.apply { text = funcCodex.codexRaw(text, code) },
+            )
         }
     }
-
-    fun fetchSpam(post: PostSpam): ApiResponse = ApiResponse(fetchSpam(post.type, post.code, post.limit))
 
     private fun fetchArknights(): EntryGachaAk = repoAk.findRand() ?: EntryGachaAk(0, "Empty")
 

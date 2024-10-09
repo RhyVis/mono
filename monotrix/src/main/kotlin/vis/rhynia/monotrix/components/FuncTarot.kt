@@ -62,9 +62,7 @@ class FuncTarot(
         }
 
         log.info("Processed ${decks.size} decks")
-        for (entry in decks.entries) {
-            log.info(" > ${entry.key}: ${entry.value.deck.size}")
-        }
+        decks.entries.forEach { log.info(" > ${it.key}: ${it.value.deck.size}") }
     }
 
     fun draw(

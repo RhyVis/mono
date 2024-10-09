@@ -5,7 +5,7 @@ import org.springframework.boot.ApplicationRunner
 import org.springframework.stereotype.Component
 import vis.rhynia.monotrix.interfaces.Log
 import vis.rhynia.monotrix.interfaces.Log.Companion.log
-import vis.rhynia.monotrix.util.DictAssembly
+import vis.rhynia.monotrix.utils.DictAssembly
 
 @Log
 @Component
@@ -14,6 +14,8 @@ class Preloader(
     private val funcTarot: FuncTarot,
 ) : ApplicationRunner {
     override fun run(args: ApplicationArguments?) {
+        log.info("Starting up with args: $args")
+
         // Static
         DictAssembly.init()
 
